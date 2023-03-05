@@ -56,19 +56,21 @@ res.send(result);
     
 }
 
-const update = async (req, res) => {
-    try {
-      let id = req.params.id;
-      let data = req.body;
-      let result = await Computer.findByIdAndUpdate(
-        {_id:id},
-         data,{new:true}
-         ); // <-- passer les arguments séparément
-      res.send(result);
-    } catch (err) {
-      console.log(err);
-    }
-  }
+const update = async (req, res,filename) => {
+  try {
+    let id = req.params.id;
+    let data = req.body;
+
+if(filename.length>0){
+data.image=filename;
+}
+
+    let result = await Computer.findByIdAndUpdate({_id:id}, data); // <-- passer les arguments séparément
+    res.status(200).send(result);
+  }  catch (error) {
+      res.status(500).send(error);
+   }
+}
 module.exports={
 create,
 getall,

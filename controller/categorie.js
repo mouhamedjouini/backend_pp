@@ -41,27 +41,41 @@ res.send(result);
     
 };
 
-const update =async(req,res)=>{
-    const categorie = await Categorie.findById(req.params.id) 
-    if (!categorie) {
-        res.status(400)
-        throw new Error('book not found')
-      }
-    
-
-      
-      const updateC = await Categorie.findByIdAndUpdate(req.params.id, req.body, {
-          new: true,
-        })
-      
-        res.status(200).json(updateC)
+const update = async (req, res,filename) => {
+    try {
+      let id = req.params.id;
+      let data = req.body;
   
-
-};
+  if(filename.length>0){
+  data.image=filename;
+  }
+  
+      let result = await Categorie.findByIdAndUpdate({_id:id}, data); // <-- passer les arguments séparément
+      res.status(200).send(result);
+    }  catch (error) {
+        res.status(500).send(error);
+     }
+  };
+  const getbyid =async (req,res)=>{
+    try{
+    let id=req.params.id;
+    let result=await Categorie.findById({_id:id});
+    res.send(result);
+    
+    }
+    catch(err){
+        console.log(err);
+    }
+    
+    
+    
+  }    
+ 
 module.exports={
 create,
 getall,
 del,
-update
+update,
+getbyid
 
 }

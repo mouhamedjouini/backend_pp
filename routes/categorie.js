@@ -4,7 +4,7 @@ const express = require('express');
 
 const router = express.Router();
 
-  const {create,getall,del,update} =require('../controller/categorie');
+  const {create,getall,del,update,getbyid} =require('../controller/categorie');
 
 
 // multer config
@@ -31,9 +31,15 @@ router.post('/create',  upload.any('image'),(req,res)=>{
 }
 
 )
+router.get('/getbyid/:id',getbyid);
 router.get('/getall',getall);
 router.delete('/del/:id',del);
-router.put('/update/:id',update);
+router.put('/update/:id',upload.any('image'),(req,res)=>{
+
+    update(req,res,filename);
+  
+    filename='';
+  });
 
 
 

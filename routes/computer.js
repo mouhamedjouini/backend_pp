@@ -34,7 +34,14 @@ router.post('/create',  upload.any('image'),(req,res)=>{
 router.get('/getall',getall);
 router.get('/getbyid/:id',getbyid);
 router.delete('/del/:id',del);
-router.put('/update/:id',update);
+router.put('/update/:id',upload.any('image'),(req,res)=>{
+
+  update(req,res,filename);
+
+  filename='';
+});
+
+
 
 
 

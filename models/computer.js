@@ -16,6 +16,10 @@ date_ajout:{
 image:{
     type :String,
     required : true,
+},
+prix:{
+    type :String,
+    required : true,
 }
 
 
