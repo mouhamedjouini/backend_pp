@@ -9,6 +9,10 @@ description:{
     type :String,
     required : true,
 },
+categorie:{
+    type :String,
+    required : true,
+},
 date_ajout:{
     type :String,
     required : true,
