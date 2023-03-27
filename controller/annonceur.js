@@ -1,21 +1,21 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
-const Annonceur = require('../models/annonceur')
+const User = require('../models/annonceur')
 
 // @desc    Register new user
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { lastname, firstname,image, email, password } = req.body
+  const { name, email, password } = req.body
 
-  if (!lastname ||!firstname || !image ||!email || !password) {
+  if (!name || !email || !password) {
     res.status(400)
     throw new Error('Please add all fields')
   }
 
   // Check if user exists
-  const userExists = await Annonceur.findOne({ email })
+  const userExists = await User.findOne({ email })
 
   if (userExists) {
     res.status(400)
@@ -27,21 +27,18 @@ const registerUser = asyncHandler(async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, salt)
 
   // Create user
-  const annonceur = await Annonceur.create({
-    lastname,
-    firstname,
-    image,
+  const user = await User.create({
+    name,
     email,
     password: hashedPassword,
   })
 
-  if (annonceur) {
+  if (user) {
     res.status(201).json({
-      _id: annonceur.id,
-      lastname: annonceur.lastname,
-      firstname: annonceur.firstname,
-      email: annonceur.email,
-      token: generateToken(annonceur._id),
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+      token: generateToken(user._id),
     })
   } else {
     res.status(400)
@@ -56,13 +53,13 @@ const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
 
   // Check for user email
-  const annonceur = await Annonceur.findOne({ email })
+  const user = await User.findOne({ email })
 
-  if (annonceur && (await bcrypt.compare(password, annonceur.password))) {
+  if (user && (await bcrypt.compare(password, user.password))) {
     res.json({
-      _id: annonceur.id,
-      name: annonceur.name,
-      email: annonceur.email,
+      _id: user.id,
+      name: user.name,
+      email: user.email,
       token: generateToken(user._id),
     })
   } else {

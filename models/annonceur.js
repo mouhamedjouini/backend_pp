@@ -1,20 +1,12 @@
 const mongoose = require('mongoose')
 
-const adminSchema = mongoose.Schema(
+const AnnonceurSchema = mongoose.Schema(
   {
-    firstname: {
+    name: {
       type: String,
       required: [true, 'Please add a fname'],
     },
-    lastename: {
-        type: String,
-        required: [true, 'Please add a lname'],
-      },
-      
-      image: {
-        type: String,
-        required: [true, 'Please add a image'],
-      },
+  
     email: {
       type: String,
       required: [true, 'Please add an email'],
@@ -31,4 +23,4 @@ const adminSchema = mongoose.Schema(
   }
 )
 
-module.exports = mongoose.model('Admin', adminSchema)
+module.exports = mongoose.model('Annonceur', AnnonceurSchema)
