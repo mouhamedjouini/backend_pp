@@ -13,8 +13,5 @@ image:{
     type :String,
 
 }
-
-
-
 })
 module.exports=categorieSchema;

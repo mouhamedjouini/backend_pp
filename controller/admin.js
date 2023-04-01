@@ -88,12 +88,14 @@ const update = async (req, res,filename) => {
           let id = req.params.id;
           let data = req.body;
       
+      
       if(filename.length>0){
       data.image=filename;
       }
       
           let result = await User.findByIdAndUpdate({_id:id}, data); // <-- passer les arguments séparément
-          res.status(200).send(result);
+      
+          res.status(200).send(data);
         }  catch (error) {
             res.status(500).send(error);
          }

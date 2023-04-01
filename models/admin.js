@@ -6,10 +6,7 @@ const adminSchema = mongoose.Schema(
       type: String,
       required: [true, 'Please add a name'],
     },
-    lastname: {
-        type: String,
-        required: [true, 'Please add a lname'],
-      },
+  
     email: {
       type: String,
       required: [true, 'Please add an email'],

@@ -4,6 +4,7 @@ const {
   registerUser,
   loginUser,
   getMe,
+  update
 } = require('../controller/admin')
 const { protect } = require('../middleware/authmiddleware')
 const multer=require('multer');
@@ -22,12 +23,19 @@ const upload=multer ({storage:mystorage})
 
 
 
-router.post('/r',  upload.any('image'),(req,res)=>{
+router.post('/',  upload.any('image'),(req,res)=>{
 
     registerUser(req,res,filename);
 })
-router.post('/', registerUser)
+
 router.post('/login', loginUser)
 router.get('/me',protect, getMe)
+router.put('/update/:id',upload.any('image'),(req,res)=>{
+
+  update(req,res,filename);
+
+  filename='';
+});
+
 
 module.exports = router

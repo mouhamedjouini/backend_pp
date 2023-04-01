@@ -7,7 +7,10 @@ const create = async (req, res, filename) => {
       let result = await categorie.save(); // <-- appel de la méthode save() sur l'instance créée
       res.send(result);
     } catch (err) {
-      console.log(err);
+      res.status(500).json({
+        error: 'Internal Server Error',
+        message: 'An error occurred .',
+      });
     }
   }
 
@@ -17,7 +20,10 @@ let result=await Categorie.find();
 res.send(result);
 }
 catch(err){
-    console.log(err);
+  res.status(500).json({
+    error: 'Internal Server Error',
+    message: 'An error occurred .',
+  });
 }
 
 
@@ -36,7 +42,10 @@ res.send(result);
 
 
     catch(err){
-        console.log(err);
+      res.status(500).json({
+        error: 'Internal Server Error',
+        message: 'An error occurred .',
+      });
     }
     
 };
@@ -51,9 +60,13 @@ const update = async (req, res,filename) => {
   }
   
       let result = await Categorie.findByIdAndUpdate({_id:id}, data); // <-- passer les arguments séparément
+      console.log(data);
       res.status(200).send(result);
     }  catch (error) {
-        res.status(500).send(error);
+      res.status(500).json({
+        error: 'Internal Server Error',
+        message: 'An error occurred .',
+      });
      }
   };
   const getbyid =async (req,res)=>{
@@ -64,7 +77,10 @@ const update = async (req, res,filename) => {
     
     }
     catch(err){
-        console.log(err);
+      res.status(500).json({
+        error: 'Internal Server Error',
+        message: 'An error occurred .',
+      });
     }
     
     

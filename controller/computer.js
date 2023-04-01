@@ -7,7 +7,10 @@ const create = async (req, res, filename) => {
     let result = await computer.save(); // <-- appel de la méthode save() sur l'instance créée
     res.send(result);
   } catch (err) {
-    console.log(err);
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'An error occurred .',
+    });
   }
 }
 const getall =async (req,res)=>{
@@ -16,7 +19,10 @@ let result=await Computer.find();
 res.send(result);
 }
 catch(err){
-    console.log(err);
+  res.status(500).json({
+    error: 'Internal Server Error',
+    message: 'An error occurred .',
+  });
 }
 
 
@@ -31,7 +37,10 @@ catch(err){
       },
       (error) => {
           console.log(error)
-          res.send(error);
+          res.status(500).json({
+            error: 'Internal Server Error',
+            message: 'An error occurred .',
+          });
       }
   );
 
@@ -46,7 +55,10 @@ res.send(result);
 
 }
 catch(err){
-    console.log(err);
+  res.status(500).json({
+    error: 'Internal Server Error',
+    message: 'An error occurred .',
+  });
 }
 
 
@@ -65,7 +77,10 @@ res.send(result);
 
 
     catch(err){
-        console.log(err);
+      res.status(500).json({
+        error: 'Internal Server Error',
+        message: 'An error occurred .',
+      });
     }
     
 }
@@ -80,10 +95,13 @@ data.image=filename;
 }
 
     let result = await Computer.findByIdAndUpdate({_id:id}, data); // <-- passer les arguments séparément
+  
     res.status(200).send(result);
   }  catch (error) {
-      res.status(500).send(error);
-   }
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'An error occurred .',
+    });
 }
 module.exports={
 create,
@@ -91,6 +109,7 @@ getall,
 getbyid,
 getbyidAnnonceur,
 del,
-update
+update,
 
+}
 }
