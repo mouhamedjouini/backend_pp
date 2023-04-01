@@ -4,10 +4,11 @@ const express = require('express');
 
 const router = express.Router();
 
-  const {create,getall,getbyid,del,update} =require('../controller/computer');
+  const {create,getall,getbyid,del,update, getbyidAnnonceur} =require('../controller/computer');
 
 
 // multer config
+
 
 const multer=require('multer');
 
@@ -30,9 +31,11 @@ router.post('/create',  upload.any('image'),(req,res)=>{
     create(req,res,filename);
 }
 
+
 )
 router.get('/getall',getall);
 router.get('/getbyid/:id',getbyid);
+router.get('/getbyidAnnonceur/:id_Annonceur', getbyidAnnonceur)
 router.delete('/del/:id',del);
 router.put('/update/:id',upload.any('image'),(req,res)=>{
 

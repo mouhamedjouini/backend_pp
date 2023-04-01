@@ -11,7 +11,7 @@ description:{
 },
 image:{
     type :String,
-    required : true,
+
 }
 
 

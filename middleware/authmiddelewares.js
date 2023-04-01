@@ -18,7 +18,7 @@ const protect = asyncHandler(async (req, res, next) => {
 
       // Get user from the token
       req.user = await annonceur.findById(decoded.id).select('-password')
-
+                   
       next()
     } catch (error) {
       console.log(error)

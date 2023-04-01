@@ -6,7 +6,26 @@ const {
   getMe,
 } = require('../controller/admin')
 const { protect } = require('../middleware/authmiddleware')
+const multer=require('multer');
 
+let filename='';
+const mystorage=multer.diskStorage({
+destination:'./uploads',
+filename:(req,file,redirect)=>{
+
+filename=Date.now()+'.'+file.mimetype.split('/')[1];
+redirect(null,filename);
+}
+
+})
+const upload=multer ({storage:mystorage})
+
+
+
+router.post('/r',  upload.any('image'),(req,res)=>{
+
+    registerUser(req,res,filename);
+})
 router.post('/', registerUser)
 router.post('/login', loginUser)
 router.get('/me',protect, getMe)

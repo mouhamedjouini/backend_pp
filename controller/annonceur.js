@@ -81,9 +81,38 @@ const generateToken = (id) => {
     expiresIn: '30d',
   })
 }
-
+const getall =async (req,res)=>{
+    try{
+    let result=await User.find();
+    res.send(result);
+    }
+    catch(err){
+        console.log(err);
+    }
+}
+    
+    const del=async (req,res)=>{
+        try{
+        let id=req.params.id;
+        let result=await User.findByIdAndDelete({_id:id})
+        res.send(result);
+        
+        
+        }
+        
+        
+            catch(err){
+                console.log(err);
+            }
+            
+        };
+    
+    
+    
 module.exports = {
   registerUser,
   loginUser,
   getMe,
+  getall,
+  del,
 }

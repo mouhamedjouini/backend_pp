@@ -6,8 +6,8 @@ const User = require('../models/admin')
 // @desc    Register new user
 // @route   POST /api/users
 // @access  Public
-const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body
+const registerUser = asyncHandler(async (req, res,filename) => {
+  const { name, email, password,image } = req.body
 
   if (!name || !email || !password) {
     res.status(400)
@@ -31,6 +31,7 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password: hashedPassword,
+    image:filename,
   })
 
   if (user) {
@@ -38,6 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user.id,
       name: user.name,
       email: user.email,
+      image:user.image,
       token: generateToken(user._id),
     })
   } else {
@@ -81,9 +83,24 @@ const generateToken = (id) => {
     expiresIn: '30d',
   })
 }
-
+const update = async (req, res,filename) => {
+        try {
+          let id = req.params.id;
+          let data = req.body;
+      
+      if(filename.length>0){
+      data.image=filename;
+      }
+      
+          let result = await User.findByIdAndUpdate({_id:id}, data); // <-- passer les arguments séparément
+          res.status(200).send(result);
+        }  catch (error) {
+            res.status(500).send(error);
+         }
+      };
 module.exports = {
   registerUser,
   loginUser,
   getMe,
+  update,
 }

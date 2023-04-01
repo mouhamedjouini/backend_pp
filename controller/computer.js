@@ -1,16 +1,15 @@
 const Computer = require('../models/computer');
 const create = async (req, res, filename) => {
-    try {
-      let data = req.body;
-      let computer = new Computer(data);
-      computer.image = filename;
-      let result = await computer.save(); // <-- appel de la méthode save() sur l'instance créée
-      res.send(result);
-    } catch (err) {
-      console.log(err);
-    }
+  try {
+    let data = req.body;
+    let computer = new Computer(data);
+    computer.image = filename;
+    let result = await computer.save(); // <-- appel de la méthode save() sur l'instance créée
+    res.send(result);
+  } catch (err) {
+    console.log(err);
   }
-
+}
 const getall =async (req,res)=>{
 try{
 let result=await Computer.find();
@@ -23,6 +22,21 @@ catch(err){
 
 
 }
+
+  const getbyidAnnonceur =async (req,res)=>{
+  let id_Annonceur = req.params.id_Annonceur;
+  Computer.find({ id_Annonceur: id_Annonceur }).then(
+      (data) => {
+          res.send(data);
+      },
+      (error) => {
+          console.log(error)
+          res.send(error);
+      }
+  );
+
+};
+
 
 const getbyid =async (req,res)=>{
 try{
@@ -75,6 +89,7 @@ module.exports={
 create,
 getall,
 getbyid,
+getbyidAnnonceur,
 del,
 update
 
