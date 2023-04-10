@@ -94,7 +94,7 @@ data.image=filename;
 
     let result = await User.findByIdAndUpdate({_id:id}, data); // <-- passer les arguments séparément
     res.status(200).json({
-       message:'updated'
+       message:'result'
        
     });;
   }  catch (error) {
@@ -119,10 +119,7 @@ const getall =async (req,res)=>{
    });;
     }
     catch(err){
-        res.send(err).json({
-        
-          message:'Load failed'
-       });;
+      console.log(err);
     }
 }
     

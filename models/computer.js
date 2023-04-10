@@ -15,8 +15,8 @@ description:{
     type :String,
     required : true,
 },
-categorie:{
-    type :String,
+id_categorie:{
+    type :objectId,
     required : true,
 },
 date_ajout:{

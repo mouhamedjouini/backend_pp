@@ -1,4 +1,6 @@
 const Computer = require('../models/computer');
+
+const mongoose = require('mongoose');
 const create = async (req, res, filename) => {
   try {
     let data = req.body;
@@ -15,7 +17,18 @@ const create = async (req, res, filename) => {
 }
 const getall =async (req,res)=>{
 try{
-let result=await Computer.find();
+let result=await Computer.aggregate(
+  [
+    {
+        $lookup:{
+            from:'categories',
+            localField: 'id_categorie',
+            foreignField: '_id',
+            as : 'categorie'
+
+        }
+
+    },]);
 res.send(result);
 }
 catch(err){
@@ -24,9 +37,6 @@ catch(err){
     message: 'An error occurred .',
   });
 }
-
-
-
 }
 
   const getbyidAnnonceur =async (req,res)=>{
@@ -45,26 +55,51 @@ catch(err){
   );
 
 };
+const getbyidcategorie =async (req,res)=>{
+  let id_categorie = req.params.id_categorie;
+  Computer.find({ id_categorie: id_categorie }).then(
+      (data) => {
+          res.send(data);
+      },
+      (error) => {
+          console.log(error)
+          res.status(500).json({
+            error: 'Internal Server Error',
+            message: 'An error occurred .',
+          });
+      }
+  );
+
+};
+
+const getbyid = async (req, res) => {
+  try {
+    let id = req.params.id;
+    let result = await Computer.aggregate([
+      {
+        $match: { _id: mongoose.Types.ObjectId(id) },
+      },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'id_categorie',
+          foreignField: '_id',
+          as: 'categorie',
+        },
+      },
+    ]);
+    res.send(result[0]);
+  } catch (err) {
+    console.error(err); // log the error to the console
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'An error occurred.',
+    });
+  }
+};
 
 
-const getbyid =async (req,res)=>{
-try{
-let id=req.params.id;
-let result=await Computer.findById({_id:id});
-res.send(result);
 
-}
-catch(err){
-  res.status(500).json({
-    error: 'Internal Server Error',
-    message: 'An error occurred .',
-  });
-}
-
-
-
-
-}
 
 const del=async (req,res)=>{
 try{
@@ -77,10 +112,10 @@ res.send(result);
 
 
     catch(err){
-      res.status(500).json({
-        error: 'Internal Server Error',
-        message: 'An error occurred .',
-      });
+        res.status(500).json({
+    error: 'Internal Server Error',
+    message: 'An error occurred .',
+  });
     }
     
 }
@@ -98,18 +133,16 @@ data.image=filename;
   
     res.status(200).send(result);
   }  catch (error) {
-    res.status(500).json({
-      error: 'Internal Server Error',
-      message: 'An error occurred .',
-    });
+      res.status(500).send(error);
+   }
 }
 module.exports={
 create,
 getall,
 getbyid,
 getbyidAnnonceur,
+getbyidcategorie,
 del,
-update,
+update
 
-}
 }
