@@ -31,7 +31,7 @@ router.post('/create',  upload.any('image'),(req,res)=>{
 }
 
 
-)
+);
 router.get('/getall',getall);
 router.get('/getbyid/:id',getbyid);
 router.get('/getbyidAnnonceur/:id_Annonceur', getbyidAnnonceur)

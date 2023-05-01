@@ -27,6 +27,15 @@ let result=await Computer.aggregate(
             as : 'categorie'
 
         }
+      },
+      {
+        $lookup:{
+          from:'annonceurs',
+          localField: 'id_Annonceur',
+          foreignField: '_id',
+          as : 'annonceur'
+
+      }
 
     },]);
 res.send(result);
@@ -87,6 +96,16 @@ const getbyid = async (req, res) => {
           as: 'categorie',
         },
       },
+      {
+        $lookup:{
+          from:'annonceurs',
+          localField: 'id_Annonceur',
+          foreignField: '_id',
+          as : 'annonceur'
+
+      }
+
+    }
     ]);
     res.send(result[0]);
   } catch (err) {

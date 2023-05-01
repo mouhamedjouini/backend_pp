@@ -9,7 +9,7 @@ const User = require('../models/admin')
 const registerUser = asyncHandler(async (req, res,filename) => {
   const { name, email, password,image } = req.body
 
-  if (!name || !email || !password) {
+  if (!name || !email || !password ) {
     res.status(400)
     throw new Error('Please add all fields')
   }
