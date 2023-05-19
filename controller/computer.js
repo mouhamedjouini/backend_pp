@@ -15,6 +15,20 @@ const create = async (req, res, filename) => {
     });
   }
 }
+const createbase64 = async (req, res, filename) => {
+  try {
+    let data = req.body;
+    let computer = new Computer(data);
+    computer.image = req.body.image; // A
+    let result = await computer.save(); // <-- appel de la méthode save() sur l'instance créée
+    res.send(result);
+  } catch (err) {
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'An error occurred .',
+    });
+  }
+}
 const getall =async (req,res)=>{
 try{
 let result=await Computer.aggregate(
@@ -162,6 +176,7 @@ getbyid,
 getbyidAnnonceur,
 getbyidcategorie,
 del,
-update
+update,
+createbase64
 
 }
