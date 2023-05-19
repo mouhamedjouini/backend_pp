@@ -48,6 +48,20 @@ catch(err){
 }
 }
 
+const findByTitle = async (req, res) => {
+  try {
+    const title = req.params.title; // Assuming the title is part of the URL path parameter
+    const result = await Computer.find({ title: { $regex: title, $options: 'i' } });
+    res.send(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'An error occurred.',
+    });
+  }
+};
+
   const getbyidAnnonceur =async (req,res)=>{
   let id_Annonceur = req.params.id_Annonceur;
   Computer.find({ id_Annonceur: id_Annonceur }).then(
@@ -160,6 +174,7 @@ create,
 getall,
 getbyid,
 getbyidAnnonceur,
+findByTitle,
 getbyidcategorie,
 del,
 update
