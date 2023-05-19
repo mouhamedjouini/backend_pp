@@ -28,12 +28,17 @@ const upload=multer ({storage:mystorage})
 router.post('/create',  upload.any('image'),(req,res)=>{
 
     create(req,res,filename);
-}
+router.post('/createbase64', (req, res) => {
+  createbase64(req, res);
+ 
+});
 
 
-)
 router.get('/getall',getall);
 router.get('/getbyid/:id',getbyid);
+
+router.get('/findByTitle/:title', findByTitle)
+
 router.get('/getbyidAnnonceur/:id_Annonceur', getbyidAnnonceur)
 router.get('/getbyidcategorie/:id_categorie', getbyidcategorie)
 router.delete('/del/:id',del);

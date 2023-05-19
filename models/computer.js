@@ -10,26 +10,27 @@ const computerSchema = mongoose.model('Computer', {
         required: true,
     },
 
-    description: {
-        type: String,
-        required: true,
-    },
-    id_categorie: {
-        type: objectId,
-        required: true,
-    },
-    date_ajout: {
-        type: String,
-        required: true,
-    },
-    image: {
-        type: String,
-        // required: true,
-    },
-    prix: {
-        type: String,
-        required: true,
-    }
+
+description:{
+    type :String,
+    required : true,
+},
+id_categorie:{
+    type :objectId,
+    required : true,
+},
+date_ajout:{
+    type :String,
+    required : true,
+},
+image:{
+    type :String,
+    required : true,
+},
+prix:{
+    type :String,
+    required : true,
+}
 
 
 

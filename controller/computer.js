@@ -73,11 +73,77 @@ const getall = async (req, res) =>
       message: err
     });
   }
+<<<<<<< HEAD
 };
 
 
 const getbyidAnnonceur = async (req, res) =>
 {
+=======
+}
+const createbase64 = async (req, res, filename) => {
+  try {
+    let data = req.body;
+    let computer = new Computer(data);
+    computer.image = req.body.image; // A
+    let result = await computer.save(); // <-- appel de la méthode save() sur l'instance créée
+    res.send(result);
+  } catch (err) {
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'An error occurred .',
+    });
+  }
+}
+const getall =async (req,res)=>{
+try{
+let result=await Computer.aggregate(
+  [
+    {
+        $lookup:{
+            from:'categories',
+            localField: 'id_categorie',
+            foreignField: '_id',
+            as : 'categorie'
+
+        }
+      },
+      {
+        $lookup:{
+          from:'annonceurs',
+          localField: 'id_Annonceur',
+          foreignField: '_id',
+          as : 'annonceur'
+
+      }
+
+    },]);
+res.send(result);
+}
+catch(err){
+  res.status(500).json({
+    error: 'Internal Server Error',
+    message: 'An error occurred .',
+  });
+}
+}
+
+const findByTitle = async (req, res) => {
+  try {
+    const title = req.params.title; // Assuming the title is part of the URL path parameter
+    const result = await Computer.find({ title: { $regex: title, $options: 'i' } });
+    res.send(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'An error occurred.',
+    });
+  }
+};
+
+  const getbyidAnnonceur =async (req,res)=>{
+>>>>>>> d26de5a3d47ad06adae211ba7b0693b2c5393be6
   let id_Annonceur = req.params.id_Annonceur;
   Computer.find({ id_Annonceur: id_Annonceur }).then(
     (data) =>
@@ -136,6 +202,16 @@ const getbyid = async (req, res) =>
           as: 'categorie',
         },
       },
+      {
+        $lookup:{
+          from:'annonceurs',
+          localField: 'id_Annonceur',
+          foreignField: '_id',
+          as : 'annonceur'
+
+      }
+
+    }
     ]);
     res.send(result[0]);
   } catch (err)
@@ -193,6 +269,7 @@ const update = async (req, res, filename) =>
     res.status(500).send(err);
   }
 }
+<<<<<<< HEAD
 module.exports = {
   create,
   getall,
@@ -201,5 +278,17 @@ module.exports = {
   getbyidcategorie,
   del,
   update
+=======
+module.exports={
+create,
+getall,
+getbyid,
+getbyidAnnonceur,
+findByTitle,
+getbyidcategorie,
+del,
+update,
+createbase64
+>>>>>>> d26de5a3d47ad06adae211ba7b0693b2c5393be6
 
 }
