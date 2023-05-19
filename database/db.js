@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://127.0.0.1:27017/computer')
+mongoose.connect('mongodb+srv://khalilbarhoumi:hublocation123@hublocation.gk4icuu.mongodb.net/computer')
 .then(
 
 ()=>{
