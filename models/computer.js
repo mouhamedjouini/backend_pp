@@ -17,11 +17,11 @@ description:{
 },
 id_categorie:{
     type :objectId,
-    required : true,
+ 
 },
 date_ajout:{
     type :String,
-    required : true,
+   
 },
 image:{
     type :String,
@@ -29,7 +29,7 @@ image:{
 },
 prix:{
     type :String,
-    required : true,
+  
 }
 
 
