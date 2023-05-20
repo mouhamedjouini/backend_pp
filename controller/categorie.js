@@ -5,24 +5,30 @@ const create = async (req, res, filename) => {
       let categorie = new Categorie(data);
       categorie.image = filename;
       let result = await categorie.save(); // <-- appel de la méthode save() sur l'instance créée
-      res.send(result);
-    } catch (err) {
-      res.status(500).json({
-        error: 'Internal Server Error',
-        message: 'An error occurred .',
+      res.status(200).json({
+        status: 'success',
+        data: result
       });
+        } catch (err) {
+          res.status(!200).json({
+            status: 'failure',
+            message: err
+          });
     }
   }
 
 const getall =async (req,res)=>{
 try{
 let result=await Categorie.find();
-res.send(result);
+res.status(200).json({
+  status: 'success',
+  data: result
+});
 }
 catch(err){
-  res.status(500).json({
-    error: 'Internal Server Error',
-    message: 'An error occurred .',
+  res.status(!200).json({
+    status: 'failure',
+    message: err
   });
 }
 
@@ -35,16 +41,19 @@ const del=async (req,res)=>{
 try{
 let id=req.params.id;
 let result=await Categorie.findByIdAndDelete({_id:id})
-res.send(result);
+res.status(!200).json({
+  status: 'failure',
+  message: err
+});
 
 
 }
 
 
     catch(err){
-      res.status(500).json({
-        error: 'Internal Server Error',
-        message: 'An error occurred .',
+      res.status(!200).json({
+        status: 'failure',
+        message: err
       });
     }
     
@@ -61,11 +70,14 @@ const update = async (req, res,filename) => {
   
       let result = await Categorie.findByIdAndUpdate({_id:id}, data); // <-- passer les arguments séparément
       console.log(data);
-      res.status(200).send(result);
+      res.status(200).json({
+        status: 'success',
+        data: result
+      });
     }  catch (error) {
-      res.status(500).json({
-        error: 'Internal Server Error',
-        message: 'An error occurred .',
+      res.status(!200).json({
+        status: 'failure',
+        message: err
       });
      }
   };
@@ -73,13 +85,16 @@ const update = async (req, res,filename) => {
     try{
     let id=req.params.id;
     let result=await Categorie.findById({_id:id});
-    res.send(result);
+    res.status(200).json({
+      status: 'success',
+      data: result
+    });
     
     }
     catch(err){
-      res.status(500).json({
-        error: 'Internal Server Error',
-        message: 'An error occurred .',
+      res.status(!200).json({
+        status: 'failure',
+        message: err
       });
     }
     

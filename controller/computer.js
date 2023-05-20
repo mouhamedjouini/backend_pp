@@ -29,52 +29,68 @@ const createbase64 = async (req, res, filename) => {
     });
   }
 }
-const getall =async (req,res)=>{
-try{
-let result=await Computer.aggregate(
-  [
-    {
-        $lookup:{
-            from:'categories',
-            localField: 'id_categorie',
-            foreignField: '_id',
-            as : 'categorie'
 
+const getall = async (req, res) =>
+{
+  try
+  {
+    let result = await Computer.aggregate([
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'id_categorie',
+          foreignField: '_id',
+          as: 'categorie'
         }
       },
       {
-        $lookup:{
-          from:'annonceurs',
+        $lookup: {
+          from: 'annonceurs',
           localField: 'id_Annonceur',
           foreignField: '_id',
-          as : 'annonceur'
-
+          as: 'annonceur'
+        }
       }
-
-    },]);
-res.send(result);
-}
-catch(err){
-  res.status(500).json({
-    error: 'Internal Server Error',
-    message: 'An error occurred .',
-  });
-}
-}
-
-const findByTitle = async (req, res) => {
-  try {
-    const title = req.params.title; // Assuming the title is part of the URL path parameter
-    const result = await Computer.find({ title: { $regex: title, $options: 'i' } });
-    res.send(result);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({
-      error: 'Internal Server Error',
-      message: 'An error occurred.',
+    ]);
+    res.status(200).json({
+      status: 'success',
+      data: result
+    });
+  } catch (err)
+  {
+    res.status(!200).json({
+      status: 'failure',
+      message: err
     });
   }
 };
+
+const findByTitle = async (req, res) => { 
+  try {
+    const { title } = req.body; // Get the title from the request body
+
+    if (typeof title !== 'string') {
+      res.status(400).json({
+        status: 'No data ',
+        message: err 
+      });
+    }
+
+    const result = await Computer.find({ title: { $regex: title, $options: 'i' } });
+    res.status(200).json({
+      status: 'success',
+      data: result
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(!200).json({
+      status: 'failure',
+      message: err
+    });
+  }
+};
+
+
 
   const getbyidAnnonceur =async (req,res)=>{
   let id_Annonceur = req.params.id_Annonceur;

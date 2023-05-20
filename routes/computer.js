@@ -3,7 +3,7 @@ const express = require('express');
 
 const router = express.Router();
 
-  const {create,getall,getbyid,del,update, getbyidAnnonceur,getbyidcategorie} =require('../controller/computer');
+  const {create,getall,getbyid,del,update, getbyidAnnonceur,getbyidcategorie,findByTitle} =require('../controller/computer');
 
 
 // multer config
@@ -28,16 +28,14 @@ const upload=multer ({storage:mystorage})
 router.post('/create',  upload.any('image'),(req,res)=>{
 
     create(req,res,filename);
-router.post('/createbase64', (req, res) => {
-  createbase64(req, res);
- 
-});
+}
 
 
+);
 router.get('/getall',getall);
 router.get('/getbyid/:id',getbyid);
 
-router.get('/findByTitle/:title', findByTitle)
+router.post('/findByTitle/', findByTitle)
 
 router.get('/getbyidAnnonceur/:id_Annonceur', getbyidAnnonceur)
 router.get('/getbyidcategorie/:id_categorie', getbyidcategorie)
