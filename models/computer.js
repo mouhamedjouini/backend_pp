@@ -25,7 +25,7 @@ date_ajout:{
 },
 image:{
     type :String,
-    required : true,
+    //required : true,
 },
 prix:{
     type :String,

@@ -6,12 +6,14 @@ const User = require('../models/annonceur')
 // @desc    Register new user
 // @route   POST /api/users
 // @access  Public
-const registerUser = asyncHandler(async (req, res) => {
+const registerUser = asyncHandler(async (req, res) =>
+{
   const { name, email, password } = req.body
 
-  if (!name || !email || !password) {
+  if (!name || !email || !password)
+  {
     res.status(400).json({
-      status:false , message:'Please add all fields'
+      status: false, message: 'Please add all fields'
     });
     throw new Error('Please add all fields')
   }
@@ -19,9 +21,10 @@ const registerUser = asyncHandler(async (req, res) => {
   // Check if user exists
   const userExists = await User.findOne({ email })
 
-  if (userExists) {
+  if (userExists)
+  {
     res.status(400).json({
-      status:false , message:'User already exists'
+      status: false, message: 'User already exists'
     });
     throw new Error('User already exists')
   }
@@ -37,43 +40,60 @@ const registerUser = asyncHandler(async (req, res) => {
     password: hashedPassword,
   })
 
-  if (user) {
+  if (user)
+  {
     res.status(201).json({
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
+      status: 'success',
+      data: {
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+        token: generateToken(user._id),
+      }
     })
-  } else {
-    res.status(400).json({
-      status:false , message:'Invalid user data'
+  } else
+  {
+    res.status(!200).json({
+      status: 'failure',
+      message: err
     });
-
-    throw new Error('Invalid user data')
   }
 })
 
 // @desc    Authenticate a user
 // @route   POST /api/users/login
 // @access  Public
-const loginUser = asyncHandler(async (req, res) => {
+const loginUser = asyncHandler(async (req, res) =>
+{
   const { email, password } = req.body
 
   // Check for user email
   const user = await User.findOne({ email })
 
-  if (user && (await bcrypt.compare(password, user.password))) {
-    res.json({
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
-    })
-  } else {
-    res.status(400).json({
-      status:false , message:'Invalid credentials'
+  if (user && (await bcrypt.compare(password, user.password)))
+  {
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+        token: generateToken(user._id),
+      }
     });
-    throw new Error('Invalid credentials')
+    // res.json({
+    //   _id: user.id,
+    //   name: user.name,
+    //   email: user.email,
+    //   token: generateToken(user._id),
+    // })
+  } else 
+  {
+    res.status(400).json({
+      status: 'failure',
+      message: 'Invalid credentials'
+    });
   }
 })
 
@@ -81,7 +101,10 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route   GET /api/users/me
 // @access  Private
 const getMe = asyncHandler(async (req, res) => {
-  res.status(200).json(req.user)
+  res.status(200).json({
+    status: 'success',
+    data: req.user
+  });
 })
 const update = async (req, res,filename) => {
   try {
@@ -94,9 +117,9 @@ data.image=filename;
 
     let result = await User.findByIdAndUpdate({_id:id}, data); // <-- passer les arguments séparément
     res.status(200).json({
-       message:'result'
-       
-    });;
+      status: 'success',
+      data: result
+    });
   }  catch (error) {
       res.status(500).send(error).json({
         status:false,
@@ -113,10 +136,10 @@ const generateToken = (id) => {
 const getall =async (req,res)=>{
     try{
     let result=await User.find();
-    res.send(result).json({
-   
-      message:'Success'
-   });;
+    res.status(200).json({
+      status: 'success',
+      data: result
+    });
     }
     catch(err){
       console.log(err);
@@ -128,7 +151,10 @@ const getall =async (req,res)=>{
         try{
         let id=req.params.id;
         let result=await User.findByIdAndDelete({_id:id})
-        res.send(result);
+        res.status(200).json({
+          status: 'success',
+          data: result
+        });
         
         
         }

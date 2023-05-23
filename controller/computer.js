@@ -1,7 +1,22 @@
 const Computer = require('../models/computer');
 
 const mongoose = require('mongoose');
-const create = async (req, res, filename) => {
+
+const currentDate = new Date();
+
+ 
+
+const day = currentDate.getDate().toString().padStart(2, '0');
+const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+const year = currentDate.getFullYear().toString();
+const hours = currentDate.getHours().toString().padStart(2, '0');
+const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+const seconds = currentDate.getSeconds().toString().padStart(2, '0');
+const formattedDateTime = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+
+console.log(formattedDateTime);
+
+ const create = async (req, res, filename) => {
   try {
     let data = req.body;
     let computer = new Computer(data);
@@ -11,21 +26,25 @@ const create = async (req, res, filename) => {
   } catch (err) {
     res.status(500).json({
       error: 'Internal Server Error',
-      message: 'An error occurred .',
+      message: 'An error occurred .', 
     });
   }
 }
 const createbase64 = async (req, res, filename) => {
   try {
     let data = req.body;
+    data.date_ajout = formattedDateTime; // set the formatted date and time
     let computer = new Computer(data);
-    computer.image = req.body.image; // A
+    //computer.image = req.body.image; // A
     let result = await computer.save(); // <-- appel de la méthode save() sur l'instance créée
-    res.send(result);
-  } catch (err) {
-    res.status(500).json({
-      error: 'Internal Server Error',
-      message: 'An error occurred .',
+    res.status(200).json({
+      status: 'success',
+      data: result
+    });
+    } catch (err) {
+    res.status(!200).json({
+      status: 'failure',
+      message: err
     });
   }
 }
@@ -51,8 +70,8 @@ const getall = async (req, res) =>
           as: 'annonceur'
         }
       }
-    ]);
-    res.status(200).json({
+    ]); 
+    res.status(200).json({  
       status: 'success',
       data: result
     });
@@ -79,7 +98,7 @@ const findByTitle = async (req, res) => {
     const result = await Computer.find({ title: { $regex: title, $options: 'i' } });
     res.status(200).json({
       status: 'success',
-      data: result
+      data: result 
     });
   } catch (err) {
     console.error(err);
@@ -96,13 +115,16 @@ const findByTitle = async (req, res) => {
   let id_Annonceur = req.params.id_Annonceur;
   Computer.find({ id_Annonceur: id_Annonceur }).then(
       (data) => {
-          res.send(data);
+        res.status(200).json({
+          status: 'success',
+          data: data
+        });
       },
-      (error) => {
+      (err) => {
           console.log(error)
-          res.status(500).json({
-            error: 'Internal Server Error',
-            message: 'An error occurred .',
+          res.status(!200).json({
+            status: 'failure',
+            message: err
           });
       }
   );
@@ -111,14 +133,17 @@ const findByTitle = async (req, res) => {
 const getbyidcategorie =async (req,res)=>{
   let id_categorie = req.params.id_categorie;
   Computer.find({ id_categorie: id_categorie }).then(
-      (data) => {
-          res.send(data);
+      (result) => {
+        res.status(200).json({ 
+          status: 'success',
+          data: result
+        });
       },
       (error) => {
           console.log(error)
-          res.status(500).json({
-            error: 'Internal Server Error',
-            message: 'An error occurred .',
+          res.status(!200).json({
+            status: 'failure',
+            message: err
           });
       }
   );
@@ -150,8 +175,11 @@ const getbyid = async (req, res) => {
       }
 
     }
-    ]);
-    res.send(result[0]);
+    ]);res.status(200).json({
+      status: 'success',
+      data: result[0]
+    });
+    res.send();
   } catch (err) {
     console.error(err); // log the error to the console
     res.status(500).json({
@@ -168,7 +196,10 @@ const del=async (req,res)=>{
 try{
 let id=req.params.id;
 let result=await Computer.findByIdAndDelete({_id:id})
-res.send(result);
+res.status(200).json({
+  status: 'success',
+  data: result
+});
 
 
 }

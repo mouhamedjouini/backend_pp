@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const categorieSchema=mongoose.model('categorie',{
-title:{
+name:{
     type :String,
     required : true,
 },
